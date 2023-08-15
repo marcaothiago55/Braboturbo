@@ -1,0 +1,68 @@
+#include <Servo.h>
+//Prof Thiago Marcao//
+Servo servo1;
+Servo servo2;
+Servo servo3;
+Servo servo4;
+//Prof Thiago Marcao//
+int servoPin1 = 9;
+int servoPin2 = 10;
+int servoPin3 = 11;
+int servoPin4 = 12;
+//Prof Thiago Marcao//
+int joystickXPin = A0;
+int joystickYPin = A1;
+//Prof Thiago Marcao//
+int buttonAPin = 2;  // Pino para o botão A
+int buttonBPin = 3;  // Pino para o botão B
+int buttonCPin = 4;  // Pino para o botão C
+int buttonDPin = 5;  // Pino para o botão D
+//Prof Thiago Marcao//
+int joystickXValue;
+int joystickYValue;
+//Prof Thiago Marcao//
+int servoMinAngle = 0;
+int servoMaxAngle = 180;
+int servoAngleIncrement = 5;
+//Prof Thiago Marcao//
+void setup() {
+  servo1.attach(servoPin1);
+  servo2.attach(servoPin2);
+  servo3.attach(servoPin3);
+  servo4.attach(servoPin4);
+//Prof Thiago Marcao//
+  pinMode(buttonAPin, INPUT);
+  pinMode(buttonBPin, INPUT);
+  pinMode(buttonCPin, INPUT);
+  pinMode(buttonDPin, INPUT);
+}
+//Prof Thiago Marcao//
+void loop() {
+  joystickXValue = analogRead(joystickXPin);
+  joystickYValue = analogRead(joystickYPin);
+//Prof Thiago Marcao//
+  int servo1Angle = servo1.read();  // Obtém o ângulo atual
+  int servo2Angle = servo2.read();  // Obtém o ângulo atual
+//Prof Thiago Marcao//
+  // Atualiza o ângulo do servo 1 com base nos botões pressionados
+  if (digitalRead(buttonDPin) == HIGH) { servo1Angle += servoAngleIncrement; }  // Botão D aumenta o ângulo do servo 1
+  if (digitalRead(buttonBPin) == HIGH) { servo1Angle -= servoAngleIncrement; }  // Botão B diminui o ângulo do servo 1
+//Prof Thiago Marcao//
+  // Atualiza o ângulo do servo 2 com base nos botões pressionados
+  if (digitalRead(buttonAPin) == HIGH) { servo2Angle += servoAngleIncrement; }  // Botão A aumenta o ângulo do servo 2
+  if (digitalRead(buttonCPin) == HIGH) { servo2Angle -= servoAngleIncrement; }  // Botão C diminui o ângulo do servo 2
+//Prof Thiago Marcao//
+  // Limita os ângulos dos servos
+  servo1Angle = constrain(servo1Angle, servoMinAngle, servoMaxAngle);
+  servo2Angle = constrain(servo2Angle, servoMinAngle, servoMaxAngle);
+//Prof Thiago Marcao//
+  int servo3Angle = map(joystickXValue, 0, 1023, servoMinAngle, servoMaxAngle);
+  int servo4Angle = map(joystickYValue, 0, 1023, servoMinAngle, servoMaxAngle);
+//Prof Thiago Marcao//
+  servo1.write(servo1Angle);
+  servo2.write(servo2Angle);
+  servo3.write(servo3Angle);
+  servo4.write(servo4Angle);
+//Prof Thiago Marcao//
+  delay(50);
+}
